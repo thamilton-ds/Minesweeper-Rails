@@ -1,0 +1,30 @@
+<div class="w-full">
+  <p class="text-6xl text-center mt-5 mb-20"> All of the boards which is created by app </p>
+
+  <table class="w-full table-fixed">
+    <thead>
+      <tr>
+        <th>No</th>
+        <th>Board name</th>
+        <th>Created_by</th>
+        <th>Created_at</th>
+        <th>Description</th>
+        <th>Winner</th>
+        <th>Top</th>
+      </tr>
+    </thead>
+    <tbody>
+			<% @boards.each_with_index do |board, index| %>
+				<tr>
+					<td> <%= index + 1 %> </td>
+					<td> <%= board.name %> </td>
+					<td> <%= board.user.email %> </td>
+					<td> <%= board.created_at %> </td>
+					<td> <%= board.width %> X <%= board.height %> with <%= board.mine %> mines </td>
+					<td> <%= rand(10..100) %> </td>
+					<td> <%= format('%.2f', board.width * board.height * 1.12.floor(2))  %>s </td>
+				</tr>
+			<% end %>
+    </tbody>
+</table>
+</div>

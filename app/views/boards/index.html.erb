@@ -1,0 +1,42 @@
+<div class="block">
+	<h1 class="text-6xl text-center mb-10"> Minesweeper</h1>	
+
+	<div class="flex w-full mx-20">
+		<%= form_with model: Board.new, url: boards_path, method: :post, class: "w-full padding-x", local: true do |f| %>
+			<div class="my-6">
+				<%= f.label :user %><br>
+				<%= f.email_field :user, required: true, class: "w-full" %>
+			</div>
+
+			<div class="my-6">
+				<%= f.label :name %><br>
+				<%= f.text_field :name, required: true, class: "w-full" %>
+			</div>
+
+			<div class="my-6">
+				<%= f.label :width %><br>
+				<%= f.number_field :width, min: 1, required: true, class: "w-full" %>
+			</div>
+
+			<div class="my-6">
+				<%= f.label :height %><br>
+				<%= f.number_field :height, min: 1, required: true, class: "w-full" %>
+			</div>
+
+			<div class="my-6">
+				<%= f.label :mine %><br>
+				<%= f.number_field :mine, min: 0, required: true, class: "w-full" %>
+			</div>
+
+			<%= f.submit "Generate Board", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full" %>
+		<% end %>
+
+		<div class="block w-full px-40">
+			<p class="text-2xl text-center mt-5 mb-5"> New boards which is created recently </p>
+
+			<% @boards.each do |board| %>
+				<div class="text-xl py-1.5"> <%= link_to board.name, board_path(board) %> </div>
+			<% end %>
+		</div>
+	</div>
+</div>

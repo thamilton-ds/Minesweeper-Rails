@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  width: MyString
+  integer: MyString
+  height: MyString
+  integer: MyString
+  mine: MyString
+  integer: MyString
+
+two:
+  name: MyString
+  width: MyString
+  integer: MyString
+  height: MyString
+  integer: MyString
+  mine: MyString
+  integer: MyString

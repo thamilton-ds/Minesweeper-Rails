@@ -1,0 +1,130 @@
+<div id="cell-<%= row %>-<%= col %>" class="shadow-lg drop-shadow-lg w-8 h-8 bg-gradient-to-r from-slate-100 to-slate-300 m-0.5" data-mine="0" data-open="0" data-adjacent="0" > </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const cell = document.getElementById('cell-<%= row %>-<%= col %>');
+    let colorStyle = "text-slate-400";
+
+    cell.addEventListener('mousedown', function(event) {
+      if (event.which === 2) {
+        const icon = document.createElement('i');
+        icon.classList.add('fas', 'fa-flag', 'text-red-800');
+      
+        cell.append(icon);
+        cell.className = 'shadow-lg drop-shadow-lg w-8 h-8 bg-gradient-to-r from-slate-100 to-slate-300 m-0.5 text-center text-xl';
+      }
+    });
+
+    cell.addEventListener('click', function() {
+      let cellVal = cell.getAttribute('data-adjacent');
+      
+      if(cell.getAttribute('data-open') == "0") {
+
+        if(cell.getAttribute('data-mine') == "1") {
+          
+          cell.setAttribute("data-open", "1");
+
+          const board = document.getElementById('board');
+          const rows = board.getAttribute('data-rows');
+          const cols = board.getAttribute('data-cols');
+
+          const icon = document.createElement('i');
+          icon.classList.add('fas', 'fa-bomb', 'text-red-800');
+
+          cell.append(icon);
+          cell.className = 'w-8 h-8 bg-slate-300 m-0.5 font-black text-center text-2xl';
+          
+          for (let i = 0; i < rows; i++) {
+            for (let j = 0; j < cols; j++) {
+              const tempCell = document.getElementById('cell-' + i + '-' + j);
+              
+              const icon = document.createElement('i');
+              icon.classList.add('fas', 'fa-bomb', 'text-gray-800');
+      
+              tempCell.setAttribute("data-open", "1");
+
+              if(tempCell.getAttribute('data-mine') == "1") {
+                tempCell.append(icon);
+                tempCell.className = 'w-8 h-8 bg-slate-300 m-0.5 font-black text-center text-2xl';
+              }
+            }
+          }
+
+        } else if (cellVal == "0") {
+          const row = cell.id.split("-")[1];
+          const col = cell.id.split("-")[2];
+    
+          openCell(row, col);
+        } else {
+          switch (cellVal) {
+            case "1":
+              colorStyle = "text-blue-600";
+              break;
+            case "2":
+              colorStyle = "text-green-600";
+              break;
+            case "3":
+              colorStyle = "text-red-600";
+              break;
+            case "4":
+              colorStyle = "text-purple-600";
+              break;
+            case "5":
+              colorStyle = "text-blue-400";
+              break;
+            case "6":
+                colorStyle = "text-amber-600";
+                break;
+            case "7":
+              colorStyle = "text-lime-600";
+              break;
+            case "8":
+              colorStyle = "text-pink-600";
+              break;
+            default:
+              colorStyle = "text-slate-400";
+          }
+
+          cell.setAttribute("data-open", "1");
+
+          cell.innerText = cellVal;
+        }
+
+        cell.className = 'w-8 h-8 bg-slate-300 m-0.5 font-black text-center text-2xl ' + colorStyle;
+      }
+    });
+
+    function openCell(row, col) {
+
+      const openedCell = document.getElementById('cell-' + row + '-' + col);
+
+      if (openedCell.getAttribute('data-mine') == "1" || openedCell.getAttribute('data-open') == "1") {
+        return;
+      }
+
+      if (openedCell.getAttribute('data-adjacent') == "0") {
+
+        openedCell.setAttribute('data-open', "1");
+        openedCell.className = 'w-8 h-8 bg-slate-300 m-0.5 font-black text-center text-2xl';
+  
+        for (let i = -1; i <= 1; i++) {
+          for (let j = -1; j <= 1; j++) {
+            const adjacentRow = parseInt(row) + i;
+            const adjacentCol = parseInt(col) + j;
+            if (isValidCell(adjacentRow, adjacentCol)) {
+              openCell(adjacentRow, adjacentCol);
+            }
+          }
+        }
+      }
+    }
+
+    function isValidCell(row, col) {
+      const board = document.getElementById('board');
+      const rows = board.getAttribute('data-rows');
+      const cols = board.getAttribute('data-cols');
+
+      return row >= 0 && row < rows && col >= 0 && col < cols;
+    }
+  });
+</script>

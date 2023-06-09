@@ -1,0 +1,61 @@
+
+<div id="board" class="bg-slate-300 p-0.5 w-fit mx-auto my-auto" data-rows="<%= @board.height %>" data-cols="<%= @board.width %>" data-mines="<%= @board.mine %>">
+	<% @board.height.times do |row| %>
+		<div class="flex">
+			<% @board.width.times do |col| %>
+				<%= render "/components/cell", row: row, col: col %>
+			<% end %>
+		</div>
+	<% end %>
+
+</div>
+<%= button_to "Retry?", board_path(@board), method: :post, class: "bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded px-10 mb-10" %>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+	let minesMarked = 0;
+
+	const board = document.getElementById('board');
+
+	const minesNum = board.getAttribute('data-mines');
+	const rows = board.getAttribute('data-rows');
+	const cols = board.getAttribute('data-cols');
+
+	while (minesMarked < minesNum) {
+		const row = Math.floor(Math.random() * rows);
+		const col = Math.floor(Math.random() * cols);
+
+		const cell = document.getElementById('cell-' + row + '-' + col);
+
+		if (cell.getAttribute('data-mine') == "0") {
+			cell.setAttribute('data-mine', '1');
+			minesMarked++;
+		}
+	}
+
+	for (let i = 0; i < rows; i++) {
+		for (let j = 0; j < cols; j++) {
+			const cell = document.getElementById('cell-' + i + '-' + j);
+			if (cell.getAttribute('data-mine') == "1") continue;
+			let count = 0;
+
+			for (let dx = -1; dx <= 1; dxopenedCell.getAttribute('data-adjacent') == "0"++) {
+				for (let dy = -1; dy <= 1; dy++) {
+
+					const newRow = i + dx;
+					const newCol = j + dy;
+
+					if (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < cols) {
+						const updatedCell = document.getElementById('cell-' + newRow + '-' + newCol);
+						if (updatedCell.getAttribute('data-mine') == "1") {
+							count++;
+						}
+					}
+				}
+			}
+
+			cell.setAttribute('data-adjacent', count);
+		}
+	}
+});
+</script>
